@@ -15,7 +15,7 @@ export default function Home() {
       </section>
       {/* Features Section */}
       <section>
-
+        <p>More changes to test if it now works or not</p>
       </section>
     </article>
   );

@@ -22,7 +22,8 @@ WORKDIR /app
 COPY --from=pruner /app/out/full/ .
 COPY --from=installer /app/node_modules ./node_modules
 
-RUN npx turbo run build --filter=docs...
+# RUN npx turbo run build --filter=docs...
+RUN npx next build --no-turbo
 
 # ---------- RUN ----------
 FROM node:20 AS runner
