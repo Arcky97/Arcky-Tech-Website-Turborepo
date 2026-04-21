@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:3090:3000"
-    environments:
+    environment:
       - RESEND_API_KEY=${RESEND_API_KEY}
 
   docs:
