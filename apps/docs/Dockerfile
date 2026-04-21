@@ -7,7 +7,7 @@ WORKDIR /app
 FROM base AS prepare
 # Replace <your-major-version> with the major version installed in your repository. For example:
 # RUN yarn global add turbo@^2
-RUN yarn global add turbo@^<your-major-version>
+RUN yarn global add turbo@^2
 COPY . .
 # Add lockfile and package.json's of isolated subworkspace
 # Generate a partial monorepo with a pruned lockfile for a target workspace.
