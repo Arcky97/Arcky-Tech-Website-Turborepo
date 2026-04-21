@@ -11,7 +11,7 @@ export default function Home() {
       </section>
       {/* News Section */}
       <section>
-        <p>We have to add a change here to test, one more change here</p>
+        <p>We have to add a change here to test, one more change here. And a final one with new Dockerfile and docker-compose files</p>
       </section>
       {/* Features Section */}
       <section>

@@ -1,38 +1,40 @@
-# ---------- BASE ----------
-FROM node:20 AS base
+FROM node:18-alpine AS base
+RUN apk update
+RUN apk add --no-cache libc6-compat
+# Set working directory
 WORKDIR /app
-RUN npm install -g turbo
-
-# ---------- PRUNE ----------
-FROM base AS pruner
+# ---
+FROM base AS prepare
+# Replace <your-major-version> with the major version installed in your repository. For example:
+# RUN yarn global add turbo@^2
+RUN yarn global add turbo@^<your-major-version>
 COPY . .
+# Add lockfile and package.json's of isolated subworkspace
+# Generate a partial monorepo with a pruned lockfile for a target workspace.
+# Assuming "web" is the name entered in the project's package.json: { name: "web" }
 RUN turbo prune web --docker
-
-# ---------- INSTALL ----------
-FROM node:20 AS installer
-WORKDIR /app
-
-COPY --from=pruner /app/out/json/ .
-RUN npm ci
-
-# ---------- BUILD ----------
-FROM node:20 AS builder
-WORKDIR /app
-
-COPY --from=pruner /app/out/full/ .
-COPY --from=installer /app/node_modules ./node_modules
-
-#RUN npx turbo run build --filter=web...
-RUN npx next build
-# ---------- RUN ----------
-FROM node:20 AS runner
-WORKDIR /app
-
-ENV NODE_ENV=production
-
-COPY --from=builder /app/apps/web/.next/standalone ./
-COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=builder /app/apps/web/public ./apps/web/public
-
-EXPOSE 3000
-CMD ["node", "apps/web/server.js"]
+# ---
+FROM base AS builder
+# First install the dependencies (as they change less often)
+COPY --from=prepare /app/out/json/ .
+RUN yarn install
+# Build the project
+COPY --from=prepare /app/out/full/ .
+# Uncomment and use build args to enable remote caching
+# ARG TURBO_TEAM
+# ENV TURBO_TEAM=$TURBO_TEAM
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
+RUN yarn turbo build
+# ---
+FROM base AS runner
+# Don't run production as root for security reasons
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+CMD node apps/web/server.js

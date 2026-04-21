@@ -1,28 +1,29 @@
-version: "3.9"
+version: "3"
 
 services:
   web:
-    image: ghcr.io/arcky97/arcky-tech-web:latest
-    restart: unless-stopped
+    container_name: web
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    restart: always
     ports:
-      - "127.0.0.1:3090:3000"
-    environment:
-      - RESEND_API_KEY=${RESEND_API_KEY}
-
+      - 3000:3000
+    networks:
+      - app_network
   docs:
-    image: ghcr.io/arcky97/arcky-tech-docs:latest
-    restart: unless-stopped
+    container_name: docs
+    build:
+      context: .
+      dockerfile: ./apps/docs/Dockerfile
+    restart: always
     ports:
-      - "127.0.0.1:3091:3000"
+      - 3001:3001
+    networks:
+      - app_network
 
-#  scoreboard:
-#    image: ghcr.io/arcky97/arcky-tech-scoreboard:latest
-#    restart: unless-stopped
-#    ports:
-#      - "127.0.0.1:3093:3000"
-
-#  dashboard:
-#    image: ghcr.io/arcky97/arcky-tech-dashboard:latest
-#    restart: unless-stopped
-#    ports:
-#      - "127.0.0.1:3092:3000"
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  app_network:
+    external: true
