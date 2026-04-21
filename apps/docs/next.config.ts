@@ -8,6 +8,7 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   reactStrictMode: true,
 
   generateBuildId: async () => {
