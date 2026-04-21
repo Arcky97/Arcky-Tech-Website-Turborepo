@@ -1,0 +1,109 @@
+@import "tailwindcss";
+@import "@repo/tailwind-config";
+
+/*@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}*/
+
+.lg-backdrop {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(8px);
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: #4b5563;
+}
+
+.skeleton-shimmer:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+.section-wrapper, .section-wrapper-history {
+  position: relative;
+}
+
+.section-wrapper h2, .section-wrapper-history h2 {
+  position: sticky;
+  top: 2.5rem;
+  z-index: 10;
+  padding: 0.4rem 0;
+}
+
+.section-wrapper h2 {
+  background: #111827;
+}
+
+.section-wrapper-history h2 {
+  background: #1e2939
+}
+
+/* Responsive embla */
+@media only screen and (max-width: 1440) {
+  .embla {
+    max-width: 70rem;
+    --slide-height: 25rem;
+    --slide-size: 60%
+  }
+}
+
+@media only screen and (max-width: 1336px) {
+
+}
+
+@media only screen and (max-width: 1232px) {
+
+}
+
+@media only screen and (max-width: 1128px) {
+
+}
+
+@media only screen and (max-width: 1023px) {
+
+}
+
+@media only screen and (max-width: 768px) {
+  .head1 {
+    font-size: 30px;
+  }
+  .head2 {
+    font-size: 24px;
+  }
+  .head3 {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 653px) {
+
+}
+
+@media only screen and (max-width: 539px) {
+
+}
+
+@media only screen and (max-width: 425px) {
+
+}
+
