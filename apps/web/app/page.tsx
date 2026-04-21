@@ -10,9 +10,13 @@ export default function Home() {
         <hr className="border-gray-600/75 border-t mt-2 mb-4"/>
       </section>
       {/* News Section */}
-      
-      {/* Features Section */}
+      <section>
 
+      </section>
+      {/* Features Section */}
+      <section>
+        
+      </section>
     </article>
   );
 }
