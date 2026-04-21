@@ -11,11 +11,11 @@ export default function Home() {
       </section>
       {/* News Section */}
       <section>
-
+        <p>We have to add a change here to test</p>
       </section>
       {/* Features Section */}
       <section>
-        
+
       </section>
     </article>
   );
